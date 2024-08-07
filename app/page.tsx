@@ -1,7 +1,18 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import {CognitoJwtVerifier} from "aws-jwt-verify";
 
-export default function Home() {
+export default async function Home() {
+  const verifier = CognitoJwtVerifier.create({
+    clientId: process.env.NEXT_PUBLIC_CLIENT_ID!,
+    userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID!,
+    tokenUse: 'access',
+  });
+
+  const result = verifier.verifySync(process.env.NEXT_PUBLIC_ACCESS_TOKEN!);
+
+  console.log(result);
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
